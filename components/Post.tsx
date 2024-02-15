@@ -23,7 +23,7 @@ export default function AddPost() {
         created_at: new Date(),
       };
 
-      const { error } = await supabase.from("posts").insert(updates);
+      const { error } = await supabase.from("posts").upsert(updates);
 
       if (error) {
         throw error;
