@@ -2,15 +2,15 @@ import React from "react";
 import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
-const FeedCard = ({ username, timeAgo, content, imageUrl }: any) => {
+const FeedCard = ({ username, created_at, content, image_url }: any) => {
   return (
     <View style={styles.card}>
       <View style={styles.header}>
         <Text style={styles.username}>{username}</Text>
-        <Text style={styles.timeAgo}>{timeAgo}</Text>
+        <Text style={styles.timeAgo}>{created_at}</Text>
       </View>
       <Text style={styles.content}>{content}</Text>
-      {imageUrl && <Image source={{ uri: imageUrl }} style={styles.image} />}
+      {image_url && <Image source={{ uri: image_url }} style={styles.image} />}
       <View style={styles.buttonsContainer}>
         <TouchableOpacity style={styles.button}>
           <Ionicons name="heart-outline" size={24} color="red" />
