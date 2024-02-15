@@ -20,16 +20,7 @@ const Layout = () => {
             ),
           }}
         />
-        <Drawer.Screen
-          name="bookmarks"
-          options={{
-            drawerLabel: "Bookmarks",
-            headerTitle: "My Bookmarks",
-            drawerIcon: ({ size, color }) => (
-              <Ionicons name="bookmarks-outline" size={size} color={color} />
-            ),
-          }}
-        />
+
         <Drawer.Screen
           name="profile"
           options={{
@@ -37,16 +28,6 @@ const Layout = () => {
             headerTitle: "My Profile",
             drawerIcon: ({ size, color }) => (
               <Ionicons name="person-outline" size={size} color={color} />
-            ),
-          }}
-        />
-        <Drawer.Screen
-          name="settings"
-          options={{
-            drawerLabel: "settings",
-            headerTitle: "Options",
-            drawerIcon: ({ size, color }) => (
-              <Ionicons name="settings-outline" size={size} color={color} />
             ),
           }}
         />

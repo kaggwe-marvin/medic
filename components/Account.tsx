@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
-import { supabase } from "../../../lib/supabase";
+import { supabase } from "../lib/supabase";
 import { StyleSheet, View, Alert } from "react-native";
 import { Button, Input } from "react-native-elements";
 import { Session } from "@supabase/supabase-js";
 
-export default function AddPost({ session }: { session: Session }) {
+export default function Account({ session }: { session: Session }) {
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
+  const [website, setWebsite] = useState("");
+  const [avatarUrl, setAvatarUrl] = useState("");
 
   useEffect(() => {
     if (session) getProfile();
@@ -20,7 +21,7 @@ export default function AddPost({ session }: { session: Session }) {
 
       const { data, error, status } = await supabase
         .from("profiles")
-        .select(`username, website, avatar_url`)
+        .select(`username, avatar_url`)
         .eq("id", session?.user.id)
         .single();
       if (error && status !== 406) {
@@ -29,7 +30,7 @@ export default function AddPost({ session }: { session: Session }) {
 
       if (data) {
         setUsername(data.username);
-        setImageUrl(data.avatar_url);
+        setAvatarUrl(data.avatar_url);
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -42,10 +43,10 @@ export default function AddPost({ session }: { session: Session }) {
 
   async function updateProfile({
     username,
-    image_url,
+    avatar_url,
   }: {
     username: string;
-    image_url: string;
+    avatar_url: string;
   }) {
     try {
       setLoading(true);
@@ -54,11 +55,11 @@ export default function AddPost({ session }: { session: Session }) {
       const updates = {
         id: session?.user.id,
         username,
-        image_url,
+        avatar_url,
         updated_at: new Date(),
       };
 
-      const { error } = await supabase.from("posts").upsert(updates);
+      const { error } = await supabase.from("profiles").upsert(updates);
 
       if (error) {
         throw error;
@@ -88,7 +89,7 @@ export default function AddPost({ session }: { session: Session }) {
       <View style={[styles.verticallySpaced, styles.mt20]}>
         <Button
           title={loading ? "Loading ..." : "Update"}
-          onPress={() => updateProfile({ username, image_url: imageUrl })}
+          onPress={() => updateProfile({ username, avatar_url: avatarUrl })}
           disabled={loading}
         />
       </View>

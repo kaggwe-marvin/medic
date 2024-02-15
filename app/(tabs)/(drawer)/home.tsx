@@ -14,11 +14,7 @@ const Page = () => {
   return (
     <ScrollView>
       <View>
-        <VirtualizedList
-          data={data}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => <FeedCard {...item} />}
-        />
+        <Text>hello</Text>
       </View>
     </ScrollView>
   );

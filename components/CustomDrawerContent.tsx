@@ -3,16 +3,20 @@ import {
   DrawerItem,
   DrawerItemList,
 } from "@react-navigation/drawer";
-import { useRouter } from "expo-router";
 import { View, Text, Image } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { supabase } from "../lib/supabase";
+import { useEffect, useState } from "react";
 
 export default function CustomDrawerContent(props: any) {
   const { top, bottom } = useSafeAreaInsets();
-  const router = useRouter();
-  const logout = () => {
-    router.replace("/");
+
+  const doLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+    }
   };
+
   return (
     <View style={{ flex: 1 }}>
       <DrawerContentScrollView
@@ -39,11 +43,11 @@ export default function CustomDrawerContent(props: any) {
               color: "#5363df",
             }}>
             {" "}
-            Dummy User
+            Dummy user
           </Text>
         </View>
         <DrawerItemList {...props} />
-        <DrawerItem label={"Logout"} onPress={logout} />
+        <DrawerItem label={"Logout"} onPress={doLogout} />
       </DrawerContentScrollView>
 
       <View

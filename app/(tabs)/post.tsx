@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -7,19 +7,19 @@ import {
   StyleSheet,
 } from "react-native";
 import AddPost from "../../components/Post";
-import FeedCard from "../../components/FeedCard";
+interface Post {
+  id: string;
+  // Add other properties of your post object here
+}
 
-const Page = ({ onAddPost }: any) => {
-  const [posts, setPosts] = useState([]);
+interface PageProps {
+  onAddPost: (newPost: Post) => void;
+}
 
-  const handleAddPost = (newPost: any) => {
-    setPosts((prevPosts) => [newPost, ...prevPosts]);
-  };
-
+const Page: React.FC<PageProps> = () => {
   return (
     <View>
-      <AddPost onAddPost={handleAddPost} />
-      <FeedCard data={posts} />
+      <AddPost />
     </View>
   );
 };

@@ -1,87 +1,85 @@
-// AddPost.js
+import { useState, useEffect } from "react";
+import { supabase } from "../lib/supabase";
+import { StyleSheet, View, Alert } from "react-native";
+import { Button, Input } from "react-native-elements";
+import Avatar from "./Avator";
 
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
-
-const AddPost = ({ onAddPost }: any) => {
+export default function AddPost() {
+  const [loading, setLoading] = useState(true);
   const [content, setContent] = useState("");
   const [imageUrl, setImageUrl] = useState("");
 
-  const handleAddPost = () => {
-    if (content.trim() !== "") {
-      const newPost = {
-        id: String(Math.random()), // Using a simple random ID for demonstration
-        username: "JohnDoe", // Assuming the user is currently logged in
-        timeAgo: "just now",
+  async function updatePost({
+    content,
+    image_url,
+  }: {
+    content: string;
+    image_url: string;
+  }) {
+    try {
+      const updates = {
         content,
-        imageUrl,
+        image_url,
+        updated_at: new Date(),
       };
 
-      onAddPost(newPost);
-      // Clear the input fields after adding the post
-      setContent("");
-      setImageUrl("");
+      const { error } = await supabase.from("posts").insert(updates);
+
+      if (error) {
+        throw error;
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        Alert.alert(error.message);
+      }
+    } finally {
+      setLoading(false);
     }
-  };
+  }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Add a Post</Text>
+      <View style={[styles.verticallySpaced, styles.mt20]}></View>
+      <View style={styles.verticallySpaced}>
+        <Input
+          label="content"
+          value={content || ""}
+          onChangeText={(text) => setContent(text)}
+        />
+      </View>
+      <View>
+        <Avatar
+          size={200}
+          url={imageUrl}
+          onUpload={(url: string) => {
+            setImageUrl(url);
+            updatePost({ content, image_url: url });
+          }}
+        />
+      </View>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Enter your post content"
-        value={content}
-        onChangeText={(text) => setContent(text)}
-        multiline
-      />
-
-      <TextInput
-        style={styles.input}
-        placeholder="Enter image URL (optional)"
-        value={imageUrl}
-        onChangeText={(text) => setImageUrl(text)}
-      />
-
-      <TouchableOpacity style={styles.addButton} onPress={handleAddPost}>
-        <Text style={styles.addButtonText}>Add Post</Text>
-      </TouchableOpacity>
+      <View style={[styles.verticallySpaced, styles.mt20]}>
+        <Button
+          title={loading ? "Loading ..." : "Update"}
+          onPress={() => updatePost({ content, image_url: imageUrl })}
+          disabled={loading}
+        />
+      </View>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
-  },
-  header: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 16,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 8,
-    padding: 8,
-    marginBottom: 16,
-  },
-  addButton: {
-    backgroundColor: "#3498db",
+    marginTop: 40,
     padding: 12,
-    borderRadius: 8,
-    alignItems: "center",
   },
-  addButtonText: {
-    color: "white",
-    fontWeight: "bold",
+  verticallySpaced: {
+    paddingTop: 4,
+    paddingBottom: 4,
+    alignSelf: "stretch",
+  },
+  mt20: {
+    marginTop: 20,
   },
 });
-
-export default AddPost;

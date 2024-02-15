@@ -21,14 +21,7 @@ const Layout = () => {
         }}
       />
 
-      <Tabs.Screen
-        name="messages"
-        options={{
-          tabBarLabel: "Chat",
-          headerTitle: "Chat",
-          tabBarIcon: makeIconRender("chatbubbles"),
-        }}
-      />
+      
       <Tabs.Screen
         name="post"
         options={{
@@ -36,13 +29,7 @@ const Layout = () => {
           tabBarIcon: makeIconRender("add-circle"),
         }}
       />
-      <Tabs.Screen
-        name="dashboard"
-        options={{
-          tabBarLabel: "dashboard",
-          tabBarIcon: makeIconRender("options"),
-        }}
-      />
+      
     </Tabs>
   );
 };
