@@ -1,5 +1,7 @@
 import {
   View,
+  SafeAreaView,
+  StatusBar,
   Text,
   Button,
   FlatList,
@@ -48,9 +50,13 @@ const Page = () => {
   }, []);
 
   return (
-    <ScrollView>
+    <SafeAreaView>
+      <View>
+        <Button title="hello" />
+      </View>
       <View>
         <VirtualizedList
+          initialNumToRender={4}
           data={posts}
           keyExtractor={(item: any) => item.id}
           renderItem={({ item }) => <FeedCard {...item} />}
@@ -58,13 +64,17 @@ const Page = () => {
           getItem={(data, index) => data[index]} // Add this line to provide item data
         />
       </View>
-    </ScrollView>
+    </SafeAreaView>
   );
 };
 
 export default Page;
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginTop: StatusBar.currentHeight,
+  },
   listContainer: {
     borderTopRightRadius: 10,
     borderTopLeftRadius: 10,
