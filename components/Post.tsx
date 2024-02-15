@@ -20,7 +20,7 @@ export default function AddPost() {
       const updates = {
         content,
         image_url,
-        updated_at: new Date(),
+        created_at: new Date(),
       };
 
       const { error } = await supabase.from("posts").insert(updates);
@@ -60,7 +60,7 @@ export default function AddPost() {
 
       <View style={[styles.verticallySpaced, styles.mt20]}>
         <Button
-          title={loading ? "Loading ..." : "Update"}
+          title={loading ? "Loading ..." : "Post"}
           onPress={() => updatePost({ content, image_url: imageUrl })}
           disabled={loading}
         />
